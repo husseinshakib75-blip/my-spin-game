@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>মাই স্পিন গেম (প্র্যাকটিস প্রজেক্ট)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 20px;
+    }
+    .coins {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #f1c40f;
+    }
+    .wheel {
+      width: 200px;
+      height: 200px;
+      border: 8px solid #f1c40f;
+      border-radius: 50%;
+      margin: 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: bold;
+      background: #0f3460;
+      transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+    }
+    button {
+      padding: 12px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      background: #e94560;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ভার্চুয়াল স্পিন গেম</h1>
+  <div class="coins">আপনার পয়েন্ট: <span id="balance">100</span> 🪙</div>
+
+  <div class="wheel" id="wheel">🎰</div>
+
+  <br>
+  <button id="spinBtn" onclick="spinWheel()">স্পিন করুন (১০ পয়েন্ট)</button>
+
+  <p id="message"></p>
+
+  <script>
+    let balance = 100;
+    const rewards = [0, 20, 50, 0, 100, 5, 0, 30];
+
+    function spinWheel() {
+      if (balance < 10) {
+        document.getElementById('message').innerText = "আপনার পর্যাপ্ত পয়েন্ট নেই!";
+        return;
+      }
+
+      balance -= 10;
+      document.getElementById('balance').innerText = balance;
+      document.getElementById('spinBtn').disabled = true;
+      document.getElementById('message').innerText = "ঘুরছে...";
+
+      const wheel = document.getElementById('wheel');
+      const randomRot = 1440 + Math.floor(Math.random() * 360);
+      wheel.style.transform = `rotate(${randomRot}deg)`;
+
+      setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * rewards.length);
+        const winAmount = rewards[randomIndex];
+        balance += winAmount;
+
+        document.getElementById('balance').innerText = balance;
+        document.getElementById('spinBtn').disabled = false;
+
+        if (winAmount > 0) {
+          document.getElementById('message').innerText = `অভিনন্দন! আপনি জিতেছেন ${winAmount} পয়েন্ট! 🎉`;
+        } else {
+          document.getElementById('message', 'ইশ! এবার কিছু জিততে পারেননি। আবার চেষ্টা করুন!');
+        }
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
